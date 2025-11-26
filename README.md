@@ -3,7 +3,7 @@
 **Alimentation linéaire audiophile double rail avec contrôle numérique**
 
 ![Made in France](https://img.shields.io/badge/Made%20in-France%20🇫🇷-blue)
-![Version](https://img. shields.io/badge/Version-2. 4.2-green)
+![Version](https://img.shields.io/badge/Version-2.4.2-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Tests](https://img.shields.io/badge/Tests-20%20PASS-brightgreen)
 
