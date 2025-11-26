@@ -1,41 +1,48 @@
-
 # Changelog
 
 Toutes les modifications notables de ce projet sont documentées ici.
 
-## [2.4.2] - 2025-11-26
+## [2.4.3] - 2025-11-26
+
+### Sécurité
+- **Validation boot bloquante** : échec `validateDigipotRange()` → blocage total
+- Sorties désactivées immédiatement (`setOutputEnable OFF`)
+- Message OLED : "ERREUR CALIBRATION" + "Verif R_FIXED/R1/R_SHUNT"
+- Boucle infinie avec LED rouge clignotante + `wdt_reset()`
+
+### Documentation
+- PREMORTEM V3.10 avec modules 9. 8, 9.9, 12
+
+## [2.4. 2] - 2025-11-26
 
 ### Corrigé
-- Calcul énergie updateEnergy() avec delta temps réel
-  - Bug: mode Purist gonflait l'énergie ×5 (appels à 200ms au lieu de 1s)
-  - Fix: calcul delta_ms avec millis() et accumulateur uptime
+- `updateEnergy()` : delta temps réel (bug Purist ×5 corrigé)
 
 ### Ajouté
-- Tests unitaires conversions digipot (20 tests, 100% PASS)
-  - test_digipot_conversion.cpp
+- Tests unitaires `test_digipot_conversion. cpp` (20 PASS)
 
-## [2.4.1] - 2025-11-26
+## [2. 4.1] - 2025-11-26
 
 ### Ajouté
 - OCP adaptatif selon V_OUT (protection thermique LM317)
   - 5-6V: 350mA max
   - 7-9V: 450mA max
   - 10-15V: 500mA max
-- Validation plage digipot au boot (calcul brut sans constrain)
 
 ### Corrigé
+- `validateDigipotRange()` : calcul brut sans constrain
 - Documentation hardware: F_SECTEUR 315mA T, C_MAIN 50V
 
 ## [2.4.0] - 2025-11-26
 
 ### Ajouté
 - Architecture post-regulator adaptative (MCP41100 sur feedback LM317)
-- Fonction getActualHeadroom() pour monitoring
+- Fonction `getActualHeadroom()` pour monitoring
 - Validation plage digipot au boot
 - Affichage headroom max sur page Santé
 
 ### Corrigé
-- MCP41100 maintenant dans specs (wiper à 1. 25V)
+- MCP41100 maintenant dans specs (wiper à 1.25V)
 - Dissipation LT3045 réduite à ~1W (était 5. 75W)
 
 ## [2.3.1] - 2025-11-25
@@ -52,7 +59,7 @@ Toutes les modifications notables de ce projet sont documentées ici.
 - Sweep tuning avec MCP41100
 - Solutions guidées fautes (4 pages)
 
-## [2.2. 1] - 2025-11-24
+## [2.2.1] - 2025-11-24
 
 ### Ajouté
 - Interface cosmétique améliorée
