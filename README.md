@@ -3,7 +3,7 @@
 **Alimentation linéaire audiophile double rail avec contrôle numérique**
 
 ![Made in France](https://img.shields.io/badge/Made%20in-France%20🇫🇷-blue)
-![Version](https://img.shields.io/badge/Version-2.4.3-green)
+![Version](https://img.shields.io/badge/Version-2.4.4-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Tests](https://img.shields.io/badge/Tests-20%20PASS-brightgreen)
 
@@ -22,7 +22,7 @@ Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour le
 - 🌍 **Multi-langue** : Anglais / Français / Allemand
 - 🎧 **Mode Purist** : Écrans OFF pour réduire les perturbations EMI
 - ⚡ **Tension ajustable** : Réglage en temps réel via digipot MCP41100
-- 🔒 **Validation boot** : Blocage si calibration invalide (V2.4.3)
+- 🔒 **Validation boot** : Blocage si calibration invalide + diagnostic (V2.4.4)
 
 ---
 
@@ -52,7 +52,7 @@ Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour le
 
 ```
 ├── firmware/                    # Code Arduino (ATmega328P)
-│   ├── LPS_Audiophile_V2_4_3/   # Version actuelle
+│   ├── LPS_Audiophile_V2_4_4/   # Version actuelle
 │   └── ... 
 │
 ├── hardware/                    # Documentation circuit
@@ -86,10 +86,10 @@ Installer via le Gestionnaire de bibliothèques Arduino :
 
 ### Téléversement
 
-1. Ouvrir `firmware/LPS_Audiophile_V2_4_3/LPS_Audiophile_V2_4_3.ino`
+1.  Ouvrir `firmware/LPS_Audiophile_V2_4_4/LPS_Audiophile_V2_4_4.ino`
 2. Sélectionner **Outils → Type de carte → Arduino Nano**
 3.  Sélectionner **Outils → Processeur → ATmega328P**
-4. Sélectionner le port COM
+4.  Sélectionner le port COM
 5. Cliquer sur **Téléverser**
 
 ---
@@ -152,30 +152,30 @@ g++ -o test_digipot test_digipot_conversion.cpp -lm
 | OCP (surintensité) | Adaptatif | Coupure + message |
 | OTP (surchauffe) | >85°C | Coupure (auto-reset <60°C) |
 | Backfeed | <-20mA | Coupure sortie |
-| Calibration boot | Plage invalide | **Blocage total** (V2.4. 3) |
+| Calibration boot | Plage invalide | **Blocage total + diagnostic** (V2.4. 4) |
 
 ---
 
 ## 📝 Changelog
 
-### V2.4.3 (Novembre 2025) ⬅️ ACTUELLE
-- ✅ **Validation boot bloquante** : échec calibration → blocage total + message OLED
-- ✅ Sorties désactivées immédiatement si erreur
-- ✅ Message diagnostic "Verif R_FIXED/R1/R_SHUNT"
+### V2.4.4 (Novembre 2025) ⬅️ ACTUELLE
+- ✅ **Diagnostic calibration amélioré** : affichage V_min/V_max calculés sur OLED
+- ✅ Valeurs attendues affichées pour faciliter debug résistances
+
+### V2.4.3
+- ✅ Validation boot bloquante : échec calibration → blocage total + message OLED
 
 ### V2.4.2
 - ✅ Fix `updateEnergy()` : delta temps réel (bug Purist ×5)
 - ✅ Ajout tests unitaires `test_digipot_conversion.cpp`
 
-### V2.4.1
+### V2. 4.1
 - ✅ OCP adaptatif selon V_OUT (protection thermique LM317)
 - ✅ `validateDigipotRange()` calcul brut sans constrain
-- ✅ Documentation hardware corrigée (F_SECTEUR 315mA, C_MAIN 50V)
 
-### V2.4.0
+### V2. 4.0
 - ✅ Architecture post-regulator adaptative
 - ✅ MCP41100 sur feedback LM317 (wiper à 1. 25V, dans specs)
-- ✅ Dissipation LT3045 réduite à ~1W
 
 ### V2.3.x
 - Multi-langue (EN/FR/DE)
