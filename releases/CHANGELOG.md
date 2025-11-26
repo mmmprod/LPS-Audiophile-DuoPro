@@ -3,6 +3,17 @@
 
 Toutes les modifications notables de ce projet sont documentées ici.
 
+## [2.4.2] - 2025-11-26
+
+### Corrigé
+- Calcul énergie updateEnergy() avec delta temps réel
+  - Bug: mode Purist gonflait l'énergie ×5 (appels à 200ms au lieu de 1s)
+  - Fix: calcul delta_ms avec millis() et accumulateur uptime
+
+### Ajouté
+- Tests unitaires conversions digipot (20 tests, 100% PASS)
+  - test_digipot_conversion.cpp
+
 ## [2.4.1] - 2025-11-26
 
 ### Ajouté
