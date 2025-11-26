@@ -3,7 +3,7 @@
 **Alimentation linéaire audiophile double rail avec contrôle numérique**
 
 ![Made in France](https://img.shields.io/badge/Made%20in-France%20🇫🇷-blue)
-![Version](https://img.shields.io/badge/Version-2.4.4-green)
+![Version](https://img.shields.io/badge/Version-2.4.5-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Tests](https://img.shields.io/badge/Tests-20%20PASS-brightgreen)
 
@@ -11,7 +11,7 @@
 
 ## 📋 Description
 
-Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour les équipements audio exigeants (DAC, préampli, streamer.. .).  Elle offre deux rails de sortie indépendants avec une régulation ultra-basse bruit grâce à l'architecture **LM317 + LT3045**.
+Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour les équipements audio exigeants (DAC, préampli, streamer.. .). Elle offre deux rails de sortie indépendants avec une régulation ultra-basse bruit grâce à l'architecture **LM317 + LT3045**.
 
 ### ✨ Caractéristiques principales
 
@@ -22,7 +22,7 @@ Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour le
 - 🌍 **Multi-langue** : Anglais / Français / Allemand
 - 🎧 **Mode Purist** : Écrans OFF pour réduire les perturbations EMI
 - ⚡ **Tension ajustable** : Réglage en temps réel via digipot MCP41100
-- 🔒 **Validation boot** : Blocage si calibration invalide + diagnostic (V2.4.4)
+- 🔒 **Validation boot** : Blocage si calibration invalide + diagnostic
 
 ---
 
@@ -52,7 +52,7 @@ Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour le
 
 ```
 ├── firmware/                    # Code Arduino (ATmega328P)
-│   ├── LPS_Audiophile_V2_4_4/   # Version actuelle
+│   ├── LPS_Audiophile_V2_4_5/   # Version actuelle
 │   └── ... 
 │
 ├── hardware/                    # Documentation circuit
@@ -86,7 +86,7 @@ Installer via le Gestionnaire de bibliothèques Arduino :
 
 ### Téléversement
 
-1.  Ouvrir `firmware/LPS_Audiophile_V2_4_4/LPS_Audiophile_V2_4_4.ino`
+1. Ouvrir `firmware/LPS_Audiophile_V2_4_5/LPS_Audiophile_V2_4_5.ino`
 2. Sélectionner **Outils → Type de carte → Arduino Nano**
 3.  Sélectionner **Outils → Processeur → ATmega328P**
 4.  Sélectionner le port COM
@@ -152,15 +152,19 @@ g++ -o test_digipot test_digipot_conversion.cpp -lm
 | OCP (surintensité) | Adaptatif | Coupure + message |
 | OTP (surchauffe) | >85°C | Coupure (auto-reset <60°C) |
 | Backfeed | <-20mA | Coupure sortie |
-| Calibration boot | Plage invalide | **Blocage total + diagnostic** (V2.4. 4) |
+| Calibration boot | Plage invalide | **Blocage total + diagnostic** |
 
 ---
 
 ## 📝 Changelog
 
-### V2.4.4 (Novembre 2025) ⬅️ ACTUELLE
-- ✅ **Diagnostic calibration amélioré** : affichage V_min/V_max calculés sur OLED
-- ✅ Valeurs attendues affichées pour faciliter debug résistances
+### V2.4.5 (Novembre 2025) ⬅️ ACTUELLE
+- 🔴 **FIX CRITIQUE** : Backfeed detection réparée (utilisait `i_out` tronqué au lieu de `raw_i` signé)
+- ✅ Instructions setting screen complètes (ajout "Click=save")
+- ✅ Code nettoyé (I_OUT_HYSTERESIS inutilisé supprimé)
+
+### V2.4.4
+- ✅ Diagnostic calibration amélioré : affichage V_min/V_max calculés sur OLED
 
 ### V2.4.3
 - ✅ Validation boot bloquante : échec calibration → blocage total + message OLED
@@ -171,11 +175,10 @@ g++ -o test_digipot test_digipot_conversion.cpp -lm
 
 ### V2. 4.1
 - ✅ OCP adaptatif selon V_OUT (protection thermique LM317)
-- ✅ `validateDigipotRange()` calcul brut sans constrain
 
-### V2. 4.0
+### V2.4.0
 - ✅ Architecture post-regulator adaptative
-- ✅ MCP41100 sur feedback LM317 (wiper à 1. 25V, dans specs)
+- ✅ MCP41100 sur feedback LM317
 
 ### V2.3.x
 - Multi-langue (EN/FR/DE)
