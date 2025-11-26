@@ -4,7 +4,7 @@
  *    LPS Audiophile V2.4.2
  * ============================================================================
  * 
- * Compilation: g++ -o test_digipot test_digipot_conversion.cpp -lm
+ * LPS Audiophile V2. 4.4
  * Exécution:   ./test_digipot
  * 
  * Vérifie:
@@ -273,7 +273,7 @@ void print_conversion_table() {
 
 int main() {
     printf("============================================================\n");
-    printf("  TEST CONVERSIONS DIGIPOT - LPS AUDIOPHILE V2.4.2\n");
+    printf("  TEST CONVERSIONS DIGIPOT - LPS AUDIOPHILE V2.4. 4\n");
     printf("============================================================\n");
     
     test_boundary_values();
