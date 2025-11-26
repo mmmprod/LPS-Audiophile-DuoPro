@@ -3,7 +3,7 @@
 **Alimentation linéaire audiophile double rail avec contrôle numérique**
 
 ![Made in France](https://img.shields.io/badge/Made%20in-France%20🇫🇷-blue)
-![Version](https://img.shields.io/badge/Version-2.4.2-green)
+![Version](https://img.shields.io/badge/Version-2.4.3-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Tests](https://img.shields.io/badge/Tests-20%20PASS-brightgreen)
 
@@ -11,7 +11,7 @@
 
 ## 📋 Description
 
-Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour les équipements audio exigeants (DAC, préampli, streamer.. .). Elle offre deux rails de sortie indépendants avec une régulation ultra-basse bruit grâce à l'architecture **LM317 + LT3045**.
+Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour les équipements audio exigeants (DAC, préampli, streamer.. .).  Elle offre deux rails de sortie indépendants avec une régulation ultra-basse bruit grâce à l'architecture **LM317 + LT3045**.
 
 ### ✨ Caractéristiques principales
 
@@ -22,6 +22,7 @@ Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour le
 - 🌍 **Multi-langue** : Anglais / Français / Allemand
 - 🎧 **Mode Purist** : Écrans OFF pour réduire les perturbations EMI
 - ⚡ **Tension ajustable** : Réglage en temps réel via digipot MCP41100
+- 🔒 **Validation boot** : Blocage si calibration invalide (V2.4.3)
 
 ---
 
@@ -51,8 +52,8 @@ Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour le
 
 ```
 ├── firmware/                    # Code Arduino (ATmega328P)
-│   └── LPS_Audiophile_V2_4_2/
-│       └── LPS_Audiophile_V2_4_2.ino
+│   ├── LPS_Audiophile_V2_4_3/   # Version actuelle
+│   └── ... 
 │
 ├── hardware/                    # Documentation circuit
 │   └── Circuit_V2_4_1. md
@@ -85,10 +86,10 @@ Installer via le Gestionnaire de bibliothèques Arduino :
 
 ### Téléversement
 
-1. Ouvrir `firmware/LPS_Audiophile_V2_4_2/LPS_Audiophile_V2_4_2.ino`
+1. Ouvrir `firmware/LPS_Audiophile_V2_4_3/LPS_Audiophile_V2_4_3.ino`
 2. Sélectionner **Outils → Type de carte → Arduino Nano**
-3. Sélectionner **Outils → Processeur → ATmega328P**
-4.  Sélectionner le port COM
+3.  Sélectionner **Outils → Processeur → ATmega328P**
+4. Sélectionner le port COM
 5. Cliquer sur **Téléverser**
 
 ---
@@ -151,12 +152,18 @@ g++ -o test_digipot test_digipot_conversion.cpp -lm
 | OCP (surintensité) | Adaptatif | Coupure + message |
 | OTP (surchauffe) | >85°C | Coupure (auto-reset <60°C) |
 | Backfeed | <-20mA | Coupure sortie |
+| Calibration boot | Plage invalide | **Blocage total** (V2.4. 3) |
 
 ---
 
 ## 📝 Changelog
 
-### V2.4.2 (Novembre 2025)
+### V2.4.3 (Novembre 2025) ⬅️ ACTUELLE
+- ✅ **Validation boot bloquante** : échec calibration → blocage total + message OLED
+- ✅ Sorties désactivées immédiatement si erreur
+- ✅ Message diagnostic "Verif R_FIXED/R1/R_SHUNT"
+
+### V2.4.2
 - ✅ Fix `updateEnergy()` : delta temps réel (bug Purist ×5)
 - ✅ Ajout tests unitaires `test_digipot_conversion.cpp`
 
@@ -189,7 +196,7 @@ g++ -o test_digipot test_digipot_conversion.cpp -lm
 | Capteur courant | INA219 module | 2 |
 | Transformateur | 2×18VAC 30VA | 1 |
 
-Voir `hardware/Circuit_V2_4_1.md` pour le schéma complet. 
+Voir `hardware/Circuit_V2_4_1.md` pour le schéma complet.
 
 ---
 
@@ -202,11 +209,3 @@ MIT License - Voir [LICENSE](LICENSE)
 ## 👨‍💻 Auteur
 
 **Mehdi** - Made in France 🇫🇷
-
----
-
-## 🙏 Remerciements
-
-- Analog Devices pour le LT3045
-- Microchip pour le MCP41100 et ATmega328P
-- Adafruit pour les bibliothèques Arduino
