@@ -1,147 +1,308 @@
-# 🎵 Amplificateur Audiophile Portable
+# LPS DUO PRO
 
-Amplificateur stéréo Class-D 2×20W avec préampli phono, Bluetooth LDAC, égaliseur 3 bandes et contrôle numérique.
+## Alimentation Linéaire Double Rail Premium pour Audiophiles
 
-![Hardware](https://img.shields.io/badge/Hardware-v1.5-blue)
-![Firmware](https://img.shields.io/badge/Firmware-v1.5-green)
-![Status](https://img.shields.io/badge/status-active-success)
-
-## ✅ Versions recommandées
-
-| Hardware | Firmware | Statut | Notes |
-|----------|----------|--------|-------|
-| **V1.5** | **V1.5** | ✅ Recommandé | Corrections audit sécurité (protection PVDD, TVS, nappe blindée) |
-| V1.4 | V1.4 | 📦 Stable | TDA7439 (EQ 3 bandes), corrections fiabilité |
-| V1.3 | V1.3 | 📦 Archive | PT2314 + MCP4261 (legacy) |
-
-> ⚠️ **V1.5 fortement recommandée** : corrige un risque de destruction de l'ampli MA12070 en cas de batterie pleine + back EMF.
-
-## ✨ Caractéristiques
-
-- **Puissance** : 2 × 20W RMS @ 8Ω (MA12070 Class-D)
-- **Sources** : Bluetooth LDAC/aptX HD (BTM525 QCC5125), AUX 3.5mm, Phono MM (préampli RIAA OPA2134)
-- **Égaliseur 3 bandes** : Bass/Mid/Treble ±14dB (pas 2dB), loudness automatique, effet spatial, 8 presets
-- **Volume & gain** : contrôle intégré TDA7439 (0 à -47dB + mute), gain d'entrée ajustable 0-30dB
-- **Contrôle** : encodeur rotatif + OLED 128×64 + télécommande IR
-- **Alimentation** : Batterie LiPo 6S (18-25V) avec BMS, autonomie 4-6h
-- **Sécurité** : 5 niveaux de protection batterie (BMS, TCO, relais, fusible, TVS)
-
-## 🛡️ Corrections V1.5 (Audit Sécurité)
-
-| Problème identifié | Solution V1.5 |
-|--------------------|---------------|
-| MA12070 PVDD 26V max vs batterie 25.2V (marge 0.8V insuffisante) | Diode Schottky D3 (SS54) série → PVDD 24.7V max (marge 1.3V) |
-| TVS SMBJ26CA clamp trop tard (Vbr=28.9V > 26V) | TVS SMBJ24CA (Vbr=26.7V) → clamp AVANT destruction |
-| Crosstalk I2C → Audio sur nappe 14 pins | Nappe 16 pins avec GND blindage entre signaux |
-| Risque blocage I2C (vibrations connecteur) | Timeout I2C 10ms anti-blocage |
-
-## 🚀 Démarrage rapide
-
-### 1) Choisir la documentation hardware
-
-| Version | Guide |
-|---------|-------|
-| **V1.5 (recommandée)** | [docs/Ampli_Audiophile_Portable_V1_5.md](docs/Ampli_Audiophile_Portable_V1_5.md) |
-| V1.4 | [docs/Hardware_V1_4.md](docs/Hardware_V1_4.md) |
-| V1.3 (archive) | [docs/Ampli_Audiophile_Portable_V1_3.md](docs/Ampli_Audiophile_Portable_V1_3.md) |
-| Outil de test | [docs/Breakout_Box_V1.md](docs/Breakout_Box_V1.md) |
-
-### 2) Sélectionner le firmware
-
-| Votre hardware | Firmware à flasher |
-|----------------|-------------------|
-| **V1.5** (TDA7439 + protections) | `firmware/Firmware_Ampli_V1_5.ino` |
-| V1.4 (TDA7439) | `firmware/Firmware_Ampli_V1_4.ino` |
-| V1.3 (PT2314 + MCP4261) | `firmware/Ampli_V1_3.ino` |
-
-1. Installer l'IDE Arduino + ESP32 Core 2.0+
-2. Ajouter les bibliothèques : `Adafruit_GFX`, `Adafruit_SSD1306`, `IRremoteESP8266`
-3. Ouvrir le fichier `.ino` correspondant, sélectionner **ESP32S3 Dev Module**, puis uploader
-
-### 3) Assemblage
-
-- Architecture bi-carte :
-  - **Carte 1** (80×100mm) : alimentation/BMS + MA12070 + protection PVDD
-  - **Carte 2** (80×120mm) : ESP32, Bluetooth, DAC, égaliseur, préampli phono
-- Liaison par **nappe JST XH 16 pins** (V1.5) avec blindage GND
-- Détails dans [docs/Ampli_Audiophile_Portable_V1_5.md](docs/Ampli_Audiophile_Portable_V1_5.md)
-
-## 📊 Architecture Simplifiée
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        CARTE 1 (Puissance)                      │
-│  BATTERIE 6S → BMS → TCO → RELAIS → FUSIBLE → D1 (SS54)        │
-│                                                ↓                │
-│                                            +22V_RAW             │
-│                                                ↓                │
-│                              D3 (SS54) ← Protection PVDD V1.5   │
-│                                                ↓                │
-│                                          +PVDD_SAFE             │
-│                                                ↓                │
-│                                            MA12070              │
-│                                           2×20W → HP            │
-└─────────────────────────────────────────────────────────────────┘
-                              ↕ Nappe 16 pins (blindée)
-┌─────────────────────────────────────────────────────────────────┐
-│                        CARTE 2 (Signal)                         │
-│  PHONO → OPA2134 → ┐                                            │
-│  AUX   ───────────→├→ CD4053 MUX → TDA7439 EQ → Buffer → Nappe │
-│  BT    → PCM5102A →┘      ↑                                     │
-│                        ESP32-S3                                 │
-│                    (OLED + Encodeur + IR)                       │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-## 🧪 Tests et diagnostics
-
-Firmware V1.5 inclut des commandes série :
-
-- `i2ctest` : détection des périphériques et comptage des erreurs
-- `adctest` : filtre médian sur 5 échantillons
-- `stats` : statistiques complètes et watchdog
-- `eqtest` : test égaliseur TDA7439
-
-## 📦 BOM Estimatif
-
-| Catégorie | Coût approx. |
-|-----------|--------------|
-| Semiconducteurs (ESP32, MA12070, TDA7439, etc.) | ~45 € |
-| Passifs (résistances, condensateurs) | ~15 € |
-| Connecteurs et câbles | ~12 € |
-| Module Bluetooth BTM525 | ~15 € |
-| Divers (PCB, boîtier, etc.) | ~15 € |
-| **Total (hors batterie et HP)** | **~102 €** |
-
-## 🤝 Contribution
-
-Les contributions sont les bienvenues : ouverture d'issues, propositions d'amélioration et pull requests. Consultez la licence pour les conditions d'usage.
-
-## 📜 Licence
-
-Projet sous licence propriétaire à usage non commercial. Usage commercial sur demande. Voir le fichier [LICENSE](LICENSE).
+![Version](https://img.shields.io/badge/version-3.1.0-blue)
+![License](https://img.shields.io/badge/license-Proprietary-red)
+![Made in](https://img.shields.io/badge/Made%20in-France-blue)
 
 ---
 
-## 📋 Changelog
+## 🎯 Présentation
 
-### V1.5 (Décembre 2025)
-- 🛡️ **Protection PVDD** : Diode Schottky SS54 série (24.7V max vs 26V limit)
-- 🛡️ **TVS adaptée** : SMBJ24CA (Vbr=26.7V) remplace SMBJ26CA
-- 🔇 **Anti-crosstalk** : Nappe 16 pins avec GND blindage
-- ⏱️ **I2C robuste** : Timeout 10ms anti-blocage
-- 📖 Documentation protection PVDD dans firmware
+Le **LPS DUO PRO** est une alimentation linéaire ultra-low noise conçue pour les audiophiles exigeants. Elle permet d'alimenter DACs, streamers, amplificateurs casque et autres équipements audio avec une qualité d'alimentation inégalée dans sa catégorie de prix.
 
-### V1.4 (Décembre 2025)
-- 🎛️ TDA7439 remplace PT2314+MCP4261 (EQ 3 bandes intégré)
-- 🔊 Loudness automatique selon volume
-- 🎚️ Effet spatial/surround
-- 🎵 8 presets sonores
-- 🛡️ Filtre médian ADC, section critique encodeur, I2C retry
+**Prix cible : 599€ TTC**
 
-### V1.3 (Novembre 2025)
-- Version initiale avec PT2314 + MCP4261
+### Positionnement Marché
+
+| Segment | Exemples | Prix |
+|---------|----------|------|
+| Entrée de gamme | Alimentations chinoises | 50-150€ |
+| **→ LPS DUO PRO** | **Notre produit** | **599€** |
+| Premium | Farad Super3, Keces P8 | 700-1200€ |
+| Ultra Premium | Uptone JS-2, Ferrum HYPSOS | 1000-2000€ |
 
 ---
 
-**🎵 Enjoy high-fidelity audio!**
+## ⚡ Spécifications Techniques
+
+### Performance Audio
+
+| Paramètre | Valeur | Comparaison |
+|-----------|--------|-------------|
+| **Bruit de sortie** | **0.46 µV RMS** | Farad: 1µV, Sbooster: 3µV |
+| Ondulation résiduelle | < 1 mV | — |
+| Régulation ligne | 0.01% | — |
+| Régulation charge | 0.02% | — |
+
+### Alimentation
+
+| Paramètre | Spécification |
+|-----------|---------------|
+| Entrée | 100-240V AC 50/60Hz |
+| Sorties | 2 rails indépendants |
+| Tension de sortie | **5-15V ajustable** (par pas de 0.01V) |
+| Courant max par rail | **1500 mA** |
+| USB 5V fixe | 500 mA |
+
+### Architecture Unique
+
+```
+AC IN → Transformateur torique → Redresseur Schottky
+     → Pré-régulateur LM338T (absorbe les variations)
+     → 6× LT3045 en parallèle (ultra-low noise)
+     → Sortie régulée
+```
+
+**Pourquoi 6× LT3045 en parallèle ?**
+- Réduction du bruit : √6 = 2.45× moins de bruit
+- Bruit théorique : 0.8µV ÷ 2.45 = **0.46 µV RMS**
+- Capacité courant : 6 × 500mA = 3A (headroom)
+- Meilleure dissipation thermique
+
+### Protections
+
+| Protection | Seuil | Description |
+|------------|-------|-------------|
+| **OVP** | >16V | Surtension |
+| **OCP** | >1.6A | Surintensité |
+| **OTP** | >70°C | Surchauffe |
+| Court-circuit | Auto-recovery | Protection fusible |
+
+---
+
+## 🖥️ Interface Utilisateur
+
+### Écran Tactile
+
+| Paramètre | Spécification |
+|-----------|---------------|
+| Board | **STM32H750B-DK** |
+| Écran | 4.3" TFT 480×272 |
+| Processeur | Cortex-M7 @ 480MHz |
+| Framework | **TouchGFX** |
+| Prix | ~76€ |
+
+### Design UI : Style FIBARO
+
+L'interface adopte une esthétique **FIBARO** - minimaliste, douce, premium :
+
+- Palette : Bleu doux (#7eb8da), blanc cassé, pas de vert
+- Jauges : Style **VU-mètre vintage** audiophile
+- Effets : Verre givré, ombres subtiles, glow bleu
+- Typographie : SF Pro Display / SF Mono
+
+### Pages de l'Interface
+
+| Page | Fonction |
+|------|----------|
+| **ECOUTE** | 3 jauges voltage (USB, SORTIE 1, SORTIE 2), métriques, status |
+| **DETAILS** | Détails par rail : voltage, courant, ondulation, puissance |
+| **SANTE** | Gardien IA, 7 métriques santé, voyants protection |
+| **SESSION** | Timer, énergie consommée, animation synthwave |
+| **CONFIG** | Son, langue, simulation défauts, infos produit |
+
+### Gardien IA
+
+Indicateur visuel intelligent avec visage émotionnel :
+
+| État | Couleur | Expression | Message |
+|------|---------|------------|---------|
+| OPTIMAL | Bleu | ◡ (sourire) | "TOUT VA BIEN!" |
+| ATTENTION | Jaune | — (neutre) | "ATTENTION REQUISE" |
+| CRITIQUE | Rouge | ︵ (triste) | "INTERVENTION URGENTE" |
+
+---
+
+## 📁 Structure du Projet
+
+```
+LPS-Audiophile-DuoPro/
+│
+├── Circuit_LPS_Audiophile_V*.md    # Documentation circuits par version
+│
+├── LPS_Audiophile_V*.ino           # Firmware Arduino (ATmega328P)
+│
+├── lps_duo_pro_v*.py               # Prototypes UI PyGame
+│
+├── PREMORTEM_V*.md                 # Protocoles validation
+│
+├── TouchGFX/                       # Projet TouchGFX (à venir)
+│   ├── assets/
+│   │   ├── images/
+│   │   │   ├── bg_main.png         # Fond principal 480×272
+│   │   │   ├── gauge_frame.png     # Cadran jauge 145×110
+│   │   │   ├── gauge_needle.png    # Aiguille 145×145
+│   │   │   └── gauge_pivot.png     # Pivot central 24×24
+│   │   └── fonts/
+│   └── gui/
+│
+└── README.md
+```
+
+---
+
+## 🔧 Hardware
+
+### Bill of Materials (Composants Clés)
+
+| Composant | Référence | Fonction | Qté |
+|-----------|-----------|----------|-----|
+| Régulateur LDO | **LT3045** | Ultra-low noise 500mA | 12 (6×2 rails) |
+| Pré-régulateur | **LM338T** | Absorbe dropout | 2 |
+| Isolation | **ADuM1201** | Isolation galvanique | 2 |
+| Monitoring | **INA219** | Mesure courant/tension | 3 |
+| Température | **NTC 10K** | Mesure thermique | 2 |
+| Digipot | **MCP4661** | Réglage voltage I2C | 2 |
+| MCU Firmware | **ATmega328P** | Contrôle principal | 1 |
+| MCU Display | **STM32H750** | Interface TouchGFX | 1 |
+
+### Budget Estimé
+
+| Catégorie | Coût |
+|-----------|------|
+| Composants électroniques | ~200€ |
+| PCB fabrication | ~30€ |
+| Boîtier aluminium | ~50€ |
+| Écran STM32H750B-DK | ~76€ |
+| Connectique, câbles | ~20€ |
+| **Total** | **~315€** |
+
+---
+
+## 💻 Firmware
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    ATmega328P (Contrôle)                    │
+├─────────────────────────────────────────────────────────────┤
+│  - Lecture INA219 (I2C)                                     │
+│  - Lecture NTC (ADC)                                        │
+│  - Contrôle Digipots MCP4661 (I2C)                         │
+│  - Protections OVP/OCP/OTP                                  │
+│  - Communication UART → STM32                               │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              │ UART
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    STM32H750 (Interface)                    │
+├─────────────────────────────────────────────────────────────┤
+│  - TouchGFX UI                                              │
+│  - Écran tactile 480×272                                    │
+│  - Réception données capteurs                               │
+│  - Affichage jauges/métriques                               │
+│  - Gestion interactions utilisateur                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Versions Firmware
+
+| Version | Date | Changements |
+|---------|------|-------------|
+| V2.4.6 | Nov 2024 | Production stable, toutes protections |
+| V2.4.4 | Nov 2024 | Ajout digipot, ajustement fin voltage |
+| V2.2.1 | Oct 2024 | OVP/OCP/OTP complets |
+| V2.1.1 | Oct 2024 | Double OLED, INA219 |
+
+---
+
+## 🎨 Création des Assets UI
+
+### Workflow
+
+```
+Midjourney V7 → Nano Banana (édition) → Magnific (upscale) → TouchGFX
+```
+
+### Outils Utilisés
+
+| Outil | Usage |
+|-------|-------|
+| **Midjourney V7** | Génération initiale des designs |
+| **Nano Banana** (Gemini) | Édition IA (suppression éléments, fond transparent) |
+| **Magnific AI** | Upscaling haute qualité |
+| **Photopea** | Recadrage, ajustements finaux |
+
+### Assets Requis
+
+| Fichier | Dimensions | Description |
+|---------|------------|-------------|
+| `bg_main.png` | 480×272 | Fond gradient bleu doux |
+| `gauge_frame.png` | 145×110 | Cadran VU-mètre sans aiguille |
+| `gauge_needle.png` | 145×145 | Aiguille seule (pivot centré) |
+| `gauge_pivot.png` | 24×24 | Bouton central doré |
+
+---
+
+## 📋 Protocole PREMORTEM
+
+Ce projet utilise le **Protocole PREMORTEM V3.5** - une méthodologie de validation systématique pour la conception électronique :
+
+### Modules Clés
+
+| Module | Fonction |
+|--------|----------|
+| **Module 0** | Triggers automatiques (composants critiques) |
+| **Module 1** | Hiérarchie des règles (NIVEAU 0/1/2) |
+| **Module 3** | Méthode datasheet |
+| **Module 4** | Protections par type de circuit |
+| **Module 5** | Calculs obligatoires |
+| **Module 9** | Validation code firmware |
+
+### Niveaux de Blocage
+
+| Niveau | Action | Exemple |
+|--------|--------|---------|
+| **NIVEAU 0** | Blocage total | Pas de datasheet semiconducteur |
+| **NIVEAU 1** | Confirmation requise | Configuration inhabituelle |
+| **NIVEAU 2** | Avertissement | Surdimensionnement |
+
+---
+
+## 🚀 Roadmap
+
+### ✅ Terminé
+
+- [x] Architecture électronique V3.1.0
+- [x] Firmware ATmega328P V2.4.6
+- [x] Prototype UI PyGame V92
+- [x] Design UI React V10
+- [x] Assets Midjourney (fond, jauge)
+
+### 🔄 En Cours
+
+- [ ] Implémentation TouchGFX
+- [ ] Extraction assets (aiguille, pivot)
+- [ ] Intégration écran STM32H750B-DK
+
+### 📋 À Faire
+
+- [ ] PCB final V3.1.0
+- [ ] Boîtier aluminium
+- [ ] Tests EMC
+- [ ] Certification CE
+- [ ] Production série
+
+---
+
+## 🇫🇷 Fabriqué en France
+
+Ce produit est conçu et assemblé en France, avec une attention particulière portée à la qualité et au support client.
+
+---
+
+## 📄 Licence
+
+Projet propriétaire - Tous droits réservés © 2024-2025
+
+---
+
+## 📞 Contact
+
+**Auteur** : Mehdi
+
+**Repository** : [github.com/mmmprod/LPS-Audiophile-DuoPro](https://github.com/mmmprod/LPS-Audiophile-DuoPro)
