@@ -1,214 +1,147 @@
-# LPS Audiophile "DUO PRO" 🎵
+# 🎵 Amplificateur Audiophile Portable
 
-**Alimentation linéaire audiophile double rail avec contrôle numérique**
+Amplificateur stéréo Class-D 2×20W avec préampli phono, Bluetooth LDAC, égaliseur 3 bandes et contrôle numérique.
 
-![Made in France](https://img.shields.io/badge/Made%20in-France%20🇫🇷-blue)
-![Version](https://img.shields.io/badge/Version-2.4.5-green)
-![License](https://img.shields.io/badge/License-MIT-yellow)
-![Tests](https://img.shields.io/badge/Tests-20%20PASS-brightgreen)
+![Hardware](https://img.shields.io/badge/Hardware-v1.5-blue)
+![Firmware](https://img.shields.io/badge/Firmware-v1.5-green)
+![Status](https://img.shields.io/badge/status-active-success)
 
----
+## ✅ Versions recommandées
 
-## 📋 Description
+| Hardware | Firmware | Statut | Notes |
+|----------|----------|--------|-------|
+| **V1.5** | **V1.5** | ✅ Recommandé | Corrections audit sécurité (protection PVDD, TVS, nappe blindée) |
+| V1.4 | V1.4 | 📦 Stable | TDA7439 (EQ 3 bandes), corrections fiabilité |
+| V1.3 | V1.3 | 📦 Archive | PT2314 + MCP4261 (legacy) |
 
-Le **LPS DUO PRO** est une alimentation linéaire haute qualité conçue pour les équipements audio exigeants (DAC, préampli, streamer.. .). Elle offre deux rails de sortie indépendants avec une régulation ultra-basse bruit grâce à l'architecture **LM317 + LT3045**.
+> ⚠️ **V1.5 fortement recommandée** : corrige un risque de destruction de l'ampli MA12070 en cas de batterie pleine + back EMF.
 
-### ✨ Caractéristiques principales
+## ✨ Caractéristiques
 
-- 🎚️ **Double rail indépendant** : 5-15V ajustable par encodeur
-- 🔇 **Ultra-basse bruit** : LT3045 post-regulator (<1µVrms)
-- 🛡️ **Protections complètes** : OVP, OCP adaptatif, OTP, Backfeed
-- 📺 **Interface OLED** : Double écran 128×64 avec 5 pages d'information
-- 🌍 **Multi-langue** : Anglais / Français / Allemand
-- 🎧 **Mode Purist** : Écrans OFF pour réduire les perturbations EMI
-- ⚡ **Tension ajustable** : Réglage en temps réel via digipot MCP41100
-- 🔒 **Validation boot** : Blocage si calibration invalide + diagnostic
+- **Puissance** : 2 × 20W RMS @ 8Ω (MA12070 Class-D)
+- **Sources** : Bluetooth LDAC/aptX HD (BTM525 QCC5125), AUX 3.5mm, Phono MM (préampli RIAA OPA2134)
+- **Égaliseur 3 bandes** : Bass/Mid/Treble ±14dB (pas 2dB), loudness automatique, effet spatial, 8 presets
+- **Volume & gain** : contrôle intégré TDA7439 (0 à -47dB + mute), gain d'entrée ajustable 0-30dB
+- **Contrôle** : encodeur rotatif + OLED 128×64 + télécommande IR
+- **Alimentation** : Batterie LiPo 6S (18-25V) avec BMS, autonomie 4-6h
+- **Sécurité** : 5 niveaux de protection batterie (BMS, TCO, relais, fusible, TVS)
 
----
+## 🛡️ Corrections V1.5 (Audit Sécurité)
 
-## 🔧 Spécifications techniques
+| Problème identifié | Solution V1.5 |
+|--------------------|---------------|
+| MA12070 PVDD 26V max vs batterie 25.2V (marge 0.8V insuffisante) | Diode Schottky D3 (SS54) série → PVDD 24.7V max (marge 1.3V) |
+| TVS SMBJ26CA clamp trop tard (Vbr=28.9V > 26V) | TVS SMBJ24CA (Vbr=26.7V) → clamp AVANT destruction |
+| Crosstalk I2C → Audio sur nappe 14 pins | Nappe 16 pins avec GND blindage entre signaux |
+| Risque blocage I2C (vibrations connecteur) | Timeout I2C 10ms anti-blocage |
 
-| Paramètre | Valeur |
-|-----------|--------|
-| Tension entrée | 230VAC 50Hz |
-| Tension sortie | 5-15V DC (par rail) |
-| Courant max | 350-500mA (adaptatif selon tension) |
-| Bruit sortie | <10µVrms typique |
-| Régulation | LM317 + LT3045 cascade |
-| Affichage | 2× OLED SSD1306 128×64 |
-| Contrôleur | ATmega328P @ 16MHz |
+## 🚀 Démarrage rapide
 
-### Limites de courant adaptatives (protection thermique LM317)
+### 1) Choisir la documentation hardware
 
-| Tension sortie | Courant max |
-|----------------|-------------|
-| 5-6V | 350mA |
-| 7-9V | 450mA |
-| 10-15V | 500mA |
+| Version | Guide |
+|---------|-------|
+| **V1.5 (recommandée)** | [docs/Ampli_Audiophile_Portable_V1_5.md](docs/Ampli_Audiophile_Portable_V1_5.md) |
+| V1.4 | [docs/Hardware_V1_4.md](docs/Hardware_V1_4.md) |
+| V1.3 (archive) | [docs/Ampli_Audiophile_Portable_V1_3.md](docs/Ampli_Audiophile_Portable_V1_3.md) |
+| Outil de test | [docs/Breakout_Box_V1.md](docs/Breakout_Box_V1.md) |
 
----
+### 2) Sélectionner le firmware
 
-## 📁 Structure du projet
+| Votre hardware | Firmware à flasher |
+|----------------|-------------------|
+| **V1.5** (TDA7439 + protections) | `firmware/Firmware_Ampli_V1_5.ino` |
+| V1.4 (TDA7439) | `firmware/Firmware_Ampli_V1_4.ino` |
+| V1.3 (PT2314 + MCP4261) | `firmware/Ampli_V1_3.ino` |
 
-```
-├── firmware/                    # Code Arduino (ATmega328P)
-│   ├── LPS_Audiophile_V2_4_5/   # Version actuelle
-│   └── ... 
-│
-├── hardware/                    # Documentation circuit
-│   └── Circuit_V2_4_1. md
-│
-├── tests/                       # Tests unitaires (PC)
-│   └── test_digipot_conversion.cpp
-│
-└── docs/                        # Documentation utilisateur
-```
+1. Installer l'IDE Arduino + ESP32 Core 2.0+
+2. Ajouter les bibliothèques : `Adafruit_GFX`, `Adafruit_SSD1306`, `IRremoteESP8266`
+3. Ouvrir le fichier `.ino` correspondant, sélectionner **ESP32S3 Dev Module**, puis uploader
 
----
+### 3) Assemblage
 
-## 🚀 Installation du firmware
+- Architecture bi-carte :
+  - **Carte 1** (80×100mm) : alimentation/BMS + MA12070 + protection PVDD
+  - **Carte 2** (80×120mm) : ESP32, Bluetooth, DAC, égaliseur, préampli phono
+- Liaison par **nappe JST XH 16 pins** (V1.5) avec blindage GND
+- Détails dans [docs/Ampli_Audiophile_Portable_V1_5.md](docs/Ampli_Audiophile_Portable_V1_5.md)
 
-### Prérequis
-
-- Arduino IDE 1.8+ ou 2.x
-- Carte : Arduino Nano / ATmega328P
-- Câble USB
-
-### Bibliothèques requises
-
-Installer via le Gestionnaire de bibliothèques Arduino :
-
-| Bibliothèque | Auteur |
-|--------------|--------|
-| Adafruit GFX Library | Adafruit |
-| Adafruit SSD1306 | Adafruit |
-| Adafruit INA219 | Adafruit |
-
-### Téléversement
-
-1. Ouvrir `firmware/LPS_Audiophile_V2_4_5/LPS_Audiophile_V2_4_5.ino`
-2. Sélectionner **Outils → Type de carte → Arduino Nano**
-3.  Sélectionner **Outils → Processeur → ATmega328P**
-4.  Sélectionner le port COM
-5. Cliquer sur **Téléverser**
-
----
-
-## 🧪 Tests unitaires
-
-Les conversions digipot ↔ tension peuvent être testées sur PC :
-
-### Compilation (Windows avec MinGW)
-
-```cmd
-cd tests
-g++ -o test_digipot. exe test_digipot_conversion.cpp
-test_digipot. exe
-```
-
-### Compilation (Linux/Mac)
-
-```bash
-cd tests
-g++ -o test_digipot test_digipot_conversion.cpp -lm
-./test_digipot
-```
-
-### Résultat attendu
+## 📊 Architecture Simplifiée
 
 ```
-============================================================
-  RÉSULTATS: 20 PASS, 0 FAIL
-============================================================
+┌─────────────────────────────────────────────────────────────────┐
+│                        CARTE 1 (Puissance)                      │
+│  BATTERIE 6S → BMS → TCO → RELAIS → FUSIBLE → D1 (SS54)        │
+│                                                ↓                │
+│                                            +22V_RAW             │
+│                                                ↓                │
+│                              D3 (SS54) ← Protection PVDD V1.5   │
+│                                                ↓                │
+│                                          +PVDD_SAFE             │
+│                                                ↓                │
+│                                            MA12070              │
+│                                           2×20W → HP            │
+└─────────────────────────────────────────────────────────────────┘
+                              ↕ Nappe 16 pins (blindée)
+┌─────────────────────────────────────────────────────────────────┐
+│                        CARTE 2 (Signal)                         │
+│  PHONO → OPA2134 → ┐                                            │
+│  AUX   ───────────→├→ CD4053 MUX → TDA7439 EQ → Buffer → Nappe │
+│  BT    → PCM5102A →┘      ↑                                     │
+│                        ESP32-S3                                 │
+│                    (OLED + Encodeur + IR)                       │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
----
+## 🧪 Tests et diagnostics
 
-## 📖 Pages de l'interface
+Firmware V1.5 inclut des commandes série :
 
-| Page | Contenu |
-|------|---------|
-| 1 | Sortie Rail A (tension, courant, état) |
-| 2 | Sortie Rail B (tension, courant, état) |
-| 3 | Score qualité alimentation |
-| 4 | Session (uptime, énergie) |
-| 5 | Santé (température, headroom) |
+- `i2ctest` : détection des périphériques et comptage des erreurs
+- `adctest` : filtre médian sur 5 échantillons
+- `stats` : statistiques complètes et watchdog
+- `eqtest` : test égaliseur TDA7439
 
-### Navigation
+## 📦 BOM Estimatif
 
-- **Rotation encodeur** : Changer de page
-- **Clic court** (page 1 ou 2) : Mode réglage tension
-- **Appui 3s** : Mode Purist (écrans OFF)
-- **Appui 5s** (page 5) : Changer la langue
+| Catégorie | Coût approx. |
+|-----------|--------------|
+| Semiconducteurs (ESP32, MA12070, TDA7439, etc.) | ~45 € |
+| Passifs (résistances, condensateurs) | ~15 € |
+| Connecteurs et câbles | ~12 € |
+| Module Bluetooth BTM525 | ~15 € |
+| Divers (PCB, boîtier, etc.) | ~15 € |
+| **Total (hors batterie et HP)** | **~102 €** |
 
----
+## 🤝 Contribution
 
-## 🛡️ Protections
+Les contributions sont les bienvenues : ouverture d'issues, propositions d'amélioration et pull requests. Consultez la licence pour les conditions d'usage.
 
-| Protection | Seuil | Action |
-|------------|-------|--------|
-| OVP (surtension) | >16V | Coupure sortie |
-| OVP Pre | >17. 5V | Coupure sortie |
-| OCP (surintensité) | Adaptatif | Coupure + message |
-| OTP (surchauffe) | >85°C | Coupure (auto-reset <60°C) |
-| Backfeed | <-20mA | Coupure sortie |
-| Calibration boot | Plage invalide | **Blocage total + diagnostic** |
+## 📜 Licence
+
+Projet sous licence propriétaire à usage non commercial. Usage commercial sur demande. Voir le fichier [LICENSE](LICENSE).
 
 ---
 
-## 📝 Changelog
+## 📋 Changelog
 
-### V2.4.5 (Novembre 2025) ⬅️ ACTUELLE
-- 🔴 **FIX CRITIQUE** : Backfeed detection réparée (utilisait `i_out` tronqué au lieu de `raw_i` signé)
-- ✅ Instructions setting screen complètes (ajout "Click=save")
-- ✅ Code nettoyé (I_OUT_HYSTERESIS inutilisé supprimé)
+### V1.5 (Décembre 2025)
+- 🛡️ **Protection PVDD** : Diode Schottky SS54 série (24.7V max vs 26V limit)
+- 🛡️ **TVS adaptée** : SMBJ24CA (Vbr=26.7V) remplace SMBJ26CA
+- 🔇 **Anti-crosstalk** : Nappe 16 pins avec GND blindage
+- ⏱️ **I2C robuste** : Timeout 10ms anti-blocage
+- 📖 Documentation protection PVDD dans firmware
 
-### V2.4.4
-- ✅ Diagnostic calibration amélioré : affichage V_min/V_max calculés sur OLED
+### V1.4 (Décembre 2025)
+- 🎛️ TDA7439 remplace PT2314+MCP4261 (EQ 3 bandes intégré)
+- 🔊 Loudness automatique selon volume
+- 🎚️ Effet spatial/surround
+- 🎵 8 presets sonores
+- 🛡️ Filtre médian ADC, section critique encodeur, I2C retry
 
-### V2.4.3
-- ✅ Validation boot bloquante : échec calibration → blocage total + message OLED
-
-### V2.4.2
-- ✅ Fix `updateEnergy()` : delta temps réel (bug Purist ×5)
-- ✅ Ajout tests unitaires `test_digipot_conversion.cpp`
-
-### V2. 4.1
-- ✅ OCP adaptatif selon V_OUT (protection thermique LM317)
-
-### V2.4.0
-- ✅ Architecture post-regulator adaptative
-- ✅ MCP41100 sur feedback LM317
-
-### V2.3.x
-- Multi-langue (EN/FR/DE)
-- Sweep tuning avec digipot
-- Solutions guidées fautes
+### V1.3 (Novembre 2025)
+- Version initiale avec PT2314 + MCP4261
 
 ---
 
-## 🔌 Hardware requis
-
-| Composant | Référence | Quantité |
-|-----------|-----------|----------|
-| Régulateur | LM317T TO-220 | 2 |
-| Post-régulateur | LT3045EDD DFN-8 | 2 |
-| Digipot | MCP41100-I/P | 2 |
-| Microcontrôleur | ATmega328P-PU | 1 |
-| Écran OLED | SSD1306 128×64 I2C | 2 |
-| Capteur courant | INA219 module | 2 |
-| Transformateur | 2×18VAC 30VA | 1 |
-
-Voir `hardware/Circuit_V2_4_1.md` pour le schéma complet.
-
----
-
-## 📄 Licence
-
-MIT License - Voir [LICENSE](LICENSE)
-
----
-
-## 👨‍💻 Auteur
-
-**Mehdi** - Made in France 🇫🇷
+**🎵 Enjoy high-fidelity audio!**
