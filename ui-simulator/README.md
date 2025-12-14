@@ -1,20 +1,20 @@
-# LPS DUO PRO - Simulateur UI (PyGame V92)
+# LPS DUO PRO - UI Simulator (PyGame V92)
 
-Simulateur PC de l'interface pour développement et tests.
+PC simulator for rapid interface development and testing.
 
-> ⚠️ **Note** : Ce simulateur est pour le développement sur PC uniquement.
-> L'interface production tourne sur **ESP32-8048S050C** avec LVGL (code C++ dans `/esp32/`).
+> ⚠️ **Note**: This simulator targets desktop development only.
+> Production UI runs on **ESP32-8048S050C** with LVGL (C++ code in `/esp32/`).
 
-## Architecture système
+## System Architecture
 
-- **ESP32-8048S050C** : Écran LCD 5" intégré 800×480, tactile capacitif, ESP32-S3
-- **ATmega328P** : Régulation LDO, protections OVP/OCP/OTP, mesures ADC
-- **Communication** : UART entre ESP32 et ATmega
+- **ESP32-8048S050C**: Integrated 5" 800×480 LCD, capacitive touch, ESP32-S3
+- **ATmega328P**: LDO regulation, OVP/OCP/OTP protections, ADC measurements
+- **Communication**: UART between ESP32 and ATmega
 
-## Prérequis simulateur
+## Simulator Requirements
 
 - Python 3.7+
-- Écran 800×480 minimum
+- 800×480 display minimum
 
 ## Installation
 
@@ -23,43 +23,43 @@ cd ui-simulator
 pip install -r requirements.txt
 ```
 
-## Lancement
+## Run
 
 ```bash
 python lps_duo_pro.py
 ```
 
-## Raccourcis clavier
+## Keyboard Shortcuts
 
-| Touche | Action |
+| Key | Action |
 |--------|--------|
-| `1-5` | Navigation pages |
-| `ESC` | Fermer popup / Quitter |
-| `ENTER` | Démarrer (écran boot) |
+| `1-5` | Page navigation |
+| `ESC` | Close popup / Quit |
+| `ENTER` | Start (boot screen) |
 
 ## Pages
 
-1. **ÉCOUTE** - Jauges voltage principales style VU-mètre
-2. **DÉTAILS** - Métriques détaillées par rail avec Nixie bars
-3. **SANTÉ** - Statut système et protections OVP/OCP/OTP
-4. **SESSION** - Timer et énergie consommée
-5. **CONFIG** - Paramètres, langue, simulations de pannes
+1. **LISTEN** - Core voltage VU meters
+2. **DETAILS** - Per-rail metrics with Nixie bars
+3. **HEALTH** - System status and OVP/OCP/OTP protections
+4. **SESSION** - Timer and consumed energy
+5. **CONFIG** - Settings, language, failure simulations
 
-## Mode Simulation
+## Simulation Mode
 
-Le simulateur génère des données fictives pour tester l'affichage sans matériel.
-Les simulations de pannes sont disponibles dans la page CONFIG :
-- NORM : Fonctionnement normal
-- HOT : Surchauffe (OTP)
-- RIP : Bruit excessif (ripple)
-- LOAD : Surcharge (OCP)
-- LO-V : Sous-tension
-- HI-V : Surtension (OVP)
+The simulator generates synthetic data to test the UI without hardware.
+Fault simulations are available on the CONFIG page:
+- NORM: Normal operation
+- HOT: Over-temp (OTP)
+- RIP: Excess ripple
+- LOAD: Over-current (OCP)
+- LO-V: Under-voltage
+- HI-V: Over-voltage (OVP)
 
-## Optimisations V92
+## V92 Optimizations
 
-- `draw.lines()` pour oscilloscopes (690→3 appels/frame)
-- Cache `get_all_problems()` par frame
-- Layout centralisé (ECOUTE_LAYOUT, DETAILS_LAYOUT, etc.)
-- LCD agrandi 95px
-- Headroom 2.0V conforme circuit V2.4.5
+- `draw.lines()` for oscilloscopes (690→3 calls/frame)
+- Cached `get_all_problems()` per frame
+- Centralized layout (ECOUTE_LAYOUT, DETAILS_LAYOUT, etc.)
+- Enlarged LCD by 95px
+- Headroom 2.0V aligned with circuit V2.4.5

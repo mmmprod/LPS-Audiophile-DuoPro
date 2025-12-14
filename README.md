@@ -1,6 +1,6 @@
 # LPS DUO PRO
 
-## Alimentation Linéaire Double Rail Premium pour Audiophiles
+## Premium Dual-Rail Linear Power Supply for Audiophiles
 
 ![Version](https://img.shields.io/badge/version-3.1.0-blue)
 ![License](https://img.shields.io/badge/license-Proprietary-red)
@@ -8,133 +8,130 @@
 
 ---
 
-## 🎯 Présentation
+## 🎯 Overview
 
-Le **LPS DUO PRO** est une alimentation linéaire ultra-low noise conçue pour les audiophiles exigeants. Elle permet d'alimenter DACs, streamers, amplificateurs casque et autres équipements audio avec une qualité d'alimentation inégalée dans sa catégorie de prix.
+The **LPS DUO PRO** is an ultra–low-noise linear supply crafted for obsessive music lovers. It feeds DACs, streamers, headphone
+amps, and other gear with a level of rail purity rarely seen in this price class.
 
-**Prix cible : 599€ TTC**
+**Target price: €599 (incl. VAT)**
 
-### Positionnement Marché
+### Market Position
 
-| Segment | Exemples | Prix |
+| Segment | Examples | Price |
 |---------|----------|------|
-| Entrée de gamme | Alimentations chinoises | 50-150€ |
-| **→ LPS DUO PRO** | **Notre produit** | **599€** |
+| Entry-level | Various imports | €50–150 |
+| **→ LPS DUO PRO** | **Our product** | **€599** |
 | Premium | Farad Super3, Keces P8 | 700-1200€ |
 | Ultra Premium | Uptone JS-2, Ferrum HYPSOS | 1000-2000€ |
 
 ---
 
-## ⚡ Spécifications Techniques
+## ⚡ Technical Specifications
 
-### Performance Audio
+### Audio Performance
 
-| Paramètre | Valeur | Comparaison |
+| Parameter | Value | Comparison |
 |-----------|--------|-------------|
-| **Bruit de sortie** | **0.46 µV RMS** | Farad: 1µV, Sbooster: 3µV |
-| Ondulation résiduelle | < 1 mV | — |
-| Régulation ligne | 0.01% | — |
-| Régulation charge | 0.02% | — |
+| **Output noise** | **0.46 µV RMS** | Farad: 1µV, Sbooster: 3µV |
+| Residual ripple | < 1 mV | — |
+| Line regulation | 0.01% | — |
+| Load regulation | 0.02% | — |
 
-### Alimentation
+### Power
 
-| Paramètre | Spécification |
+| Parameter | Specification |
 |-----------|---------------|
-| Entrée | 100-240V AC 50/60Hz |
-| Sorties | 2 rails indépendants |
-| Tension de sortie | **5-15V ajustable** (par pas de 0.01V) |
-| Courant max par rail | **1500 mA** |
-| USB 5V fixe | 500 mA |
+| Input | 100–240V AC 50/60Hz |
+| Outputs | 2 independent rails |
+| Output voltage | **5–15V adjustable** (0.01V steps) |
+| Max current per rail | **1500 mA** |
+| Fixed 5V USB | 500 mA |
 
-### Architecture Unique
+### Signature Architecture
 
 ```
-AC IN → Transformateur torique → Redresseur Schottky
-     → Pré-régulateur LM338T (absorbe les variations)
-     → 6× LT3045 en parallèle (ultra-low noise)
-     → Sortie régulée
+AC IN → Toroidal transformer → Schottky bridge
+     → LM338T pre-regulator (absorbs swings)
+     → 6× LT3045 in parallel (ultra-low noise)
+     → Regulated output
 ```
 
-**Pourquoi 6× LT3045 en parallèle ?**
-- Réduction du bruit : √6 = 2.45× moins de bruit
-- Bruit théorique : 0.8µV ÷ 2.45 = **0.46 µV RMS**
-- Capacité courant : 6 × 500mA = 3A (headroom)
-- Meilleure dissipation thermique
+**Why six LT3045s in parallel?**
+- Noise reduction: √6 = 2.45× lower noise
+- Theoretical noise: 0.8µV ÷ 2.45 = **0.46 µV RMS**
+- Current capacity: 6 × 500mA = 3A of headroom
+- Improved thermal spreading
 
 ### Protections
 
-| Protection | Seuil | Description |
+| Protection | Threshold | Description |
 |------------|-------|-------------|
-| **OVP** | >16V | Surtension |
-| **OCP** | >1.6A | Surintensité |
-| **OTP** | >70°C | Surchauffe |
-| Court-circuit | Auto-recovery | Protection fusible |
+| **OVP** | >16V | Over-voltage |
+| **OCP** | >1.6A | Over-current |
+| **OTP** | >70°C | Over-temp |
+| Short circuit | Auto-recovery | Fuse protection |
 
 ---
 
-## 🖥️ Interface Utilisateur
+## 🖥️ User Interface
 
-### Écran Tactile
+### Touch Display
 
-| Paramètre | Spécification |
+| Parameter | Specification |
 |-----------|---------------|
 | Board | **STM32H750B-DK** |
-| Écran | 4.3" TFT 480×272 |
-| Processeur | Cortex-M7 @ 480MHz |
+| Display | 4.3" TFT 480×272 |
+| Processor | Cortex-M7 @ 480MHz |
 | Framework | **TouchGFX** |
-| Prix | ~76€ |
+| Cost | ~€76 |
 
-### Design UI : Style FIBARO
+### UI Design: FIBARO-inspired Style
 
-L'interface adopte une esthétique **FIBARO** - minimaliste, douce, premium :
+The UI leans into a **FIBARO**-like aesthetic—minimal, soft, and premium:
 
-- Palette : Bleu doux (#7eb8da), blanc cassé, pas de vert
-- Jauges : Style **VU-mètre vintage** audiophile
-- Effets : Verre givré, ombres subtiles, glow bleu
-- Typographie : SF Pro Display / SF Mono
+- Palette: Gentle blue (#7eb8da), off-white, no green
+- Gauges: **Vintage VU-meter** vibe for audiophiles
+- Effects: Frosted glass, subtle shadows, blue glow
+- Typography: SF Pro Display / SF Mono
 
-### Pages de l'Interface
+### Interface Pages
 
-| Page | Fonction |
+| Page | Function |
 |------|----------|
-| **ECOUTE** | 3 jauges voltage (USB, SORTIE 1, SORTIE 2), métriques, status |
-| **DETAILS** | Détails par rail : voltage, courant, ondulation, puissance |
-| **SANTE** | Gardien IA, 7 métriques santé, voyants protection |
-| **SESSION** | Timer, énergie consommée, animation synthwave |
-| **CONFIG** | Son, langue, simulation défauts, infos produit |
+| **LISTEN** | 3 voltage gauges (USB, OUTPUT 1, OUTPUT 2), metrics, status |
+| **DETAILS** | Per-rail breakdown: voltage, current, ripple, power |
+| **HEALTH** | AI guardian, 7 wellness metrics, protection indicators |
+| **SESSION** | Timer, consumed energy, synthwave animation |
+| **CONFIG** | Sound, language, fault simulations, product info |
 
-### Gardien IA
+### AI Guardian
 
-Indicateur visuel intelligent avec visage émotionnel :
+An expressive visual indicator with emotive feedback:
 
-| État | Couleur | Expression | Message |
+| State | Color | Expression | Message |
 |------|---------|------------|---------|
-| OPTIMAL | Bleu | ◡ (sourire) | "TOUT VA BIEN!" |
-| ATTENTION | Jaune | — (neutre) | "ATTENTION REQUISE" |
-| CRITIQUE | Rouge | ︵ (triste) | "INTERVENTION URGENTE" |
+| OPTIMAL | Blue | ◡ (smile) | "ALL GOOD!" |
+| WARNING | Yellow | — (neutral) | "NEEDS ATTENTION" |
+| CRITICAL | Red | ︵ (sad) | "URGENT INTERVENTION" |
 
 ---
 
-## 📁 Structure du Projet
+## 📁 Project Structure
 
 ```
 LPS-Audiophile-DuoPro/
 │
-├── Circuit_LPS_Audiophile_V*.md    # Documentation circuits par version
-│
-├── LPS_Audiophile_V*.ino           # Firmware Arduino (ATmega328P)
-│
-├── lps_duo_pro_v*.py               # Prototypes UI PyGame
-│
-├── PREMORTEM_V*.md                 # Protocoles validation
-│
-├── TouchGFX/                       # Projet TouchGFX (à venir)
+├── Circuit_LPS_Audiophile_V*.md    # Circuit documentation by version
+├── LPS_Audiophile_V*.ino           # Arduino firmware (ATmega328P)
+├── lps_duo_pro_v*.py               # PyGame UI prototypes
+├── PREMORTEM_V*.md                 # Validation protocols
+├── TouchGFX/                       # TouchGFX project (TBD)
 │   ├── assets/
 │   │   ├── images/
-│   │   │   ├── bg_main.png         # Fond principal 480×272
-│   │   │   ├── gauge_frame.png     # Cadran jauge 145×110
-│   │   │   ├── gauge_needle.png    # Aiguille 145×145
-│   │   │   └── gauge_pivot.png     # Pivot central 24×24
+│   │   │   ├── bg_main.png         # Main background 480×272
+│   │   │   ├── gauge_frame.png     # Gauge frame 145×110
+│   │   │   ├── gauge_needle.png    # Needle 145×145
+│   │   │   └── gauge_pivot.png     # Center pivot 24×24
 │   │   └── fonts/
 │   └── gui/
 │
@@ -145,29 +142,29 @@ LPS-Audiophile-DuoPro/
 
 ## 🔧 Hardware
 
-### Bill of Materials (Composants Clés)
+### Bill of Materials (Key Components)
 
-| Composant | Référence | Fonction | Qté |
+| Component | Reference | Function | Qty |
 |-----------|-----------|----------|-----|
-| Régulateur LDO | **LT3045** | Ultra-low noise 500mA | 12 (6×2 rails) |
-| Pré-régulateur | **LM338T** | Absorbe dropout | 2 |
-| Isolation | **ADuM1201** | Isolation galvanique | 2 |
-| Monitoring | **INA219** | Mesure courant/tension | 3 |
-| Température | **NTC 10K** | Mesure thermique | 2 |
-| Digipot | **MCP4661** | Réglage voltage I2C | 2 |
-| MCU Firmware | **ATmega328P** | Contrôle principal | 1 |
-| MCU Display | **STM32H750** | Interface TouchGFX | 1 |
+| LDO regulator | **LT3045** | Ultra-low noise 500mA | 12 (6×2 rails) |
+| Pre-regulator | **LM338T** | Absorbs dropout | 2 |
+| Isolation | **ADuM1201** | Galvanic isolation | 2 |
+| Monitoring | **INA219** | Voltage/current sensing | 3 |
+| Temperature | **NTC 10K** | Thermal sensing | 2 |
+| Digipot | **MCP4661** | I2C voltage adjustment | 2 |
+| MCU Firmware | **ATmega328P** | Main control | 1 |
+| MCU Display | **STM32H750** | TouchGFX interface | 1 |
 
-### Budget Estimé
+### Estimated Budget
 
-| Catégorie | Coût |
+| Category | Cost |
 |-----------|------|
-| Composants électroniques | ~200€ |
-| PCB fabrication | ~30€ |
-| Boîtier aluminium | ~50€ |
-| Écran STM32H750B-DK | ~76€ |
-| Connectique, câbles | ~20€ |
-| **Total** | **~315€** |
+| Electronic components | ~€200 |
+| PCB fabrication | ~€30 |
+| Aluminum enclosure | ~€50 |
+| STM32H750B-DK display | ~€76 |
+| Connectors & cabling | ~€20 |
+| **Total** | **~€315** |
 
 ---
 
@@ -177,13 +174,13 @@ LPS-Audiophile-DuoPro/
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    ATmega328P (Contrôle)                    │
+│                    ATmega328P (Control)                     │
 ├─────────────────────────────────────────────────────────────┤
-│  - Lecture INA219 (I2C)                                     │
-│  - Lecture NTC (ADC)                                        │
-│  - Contrôle Digipots MCP4661 (I2C)                         │
-│  - Protections OVP/OCP/OTP                                  │
-│  - Communication UART → STM32                               │
+│  - INA219 sensing (I2C)                                     │
+│  - NTC sensing (ADC)                                        │
+│  - MCP4661 digipot control (I2C)                            │
+│  - OVP/OCP/OTP protections                                  │
+│  - UART communication → STM32                               │
 └─────────────────────────────────────────────────────────────┘
                               │
                               │ UART
@@ -192,117 +189,9 @@ LPS-Audiophile-DuoPro/
 │                    STM32H750 (Interface)                    │
 ├─────────────────────────────────────────────────────────────┤
 │  - TouchGFX UI                                              │
-│  - Écran tactile 480×272                                    │
-│  - Réception données capteurs                               │
-│  - Affichage jauges/métriques                               │
-│  - Gestion interactions utilisateur                         │
+│  - 480×272 touch display                                    │
+│  - Sensor data ingestion                                    │
+│  - Gauge/metric display                                     │
+│  - User interaction handling                                │
 └─────────────────────────────────────────────────────────────┘
 ```
-
-### Versions Firmware
-
-| Version | Date | Changements |
-|---------|------|-------------|
-| V2.4.6 | Nov 2024 | Production stable, toutes protections |
-| V2.4.4 | Nov 2024 | Ajout digipot, ajustement fin voltage |
-| V2.2.1 | Oct 2024 | OVP/OCP/OTP complets |
-| V2.1.1 | Oct 2024 | Double OLED, INA219 |
-
----
-
-## 🎨 Création des Assets UI
-
-### Workflow
-
-```
-Midjourney V7 → Nano Banana (édition) → Magnific (upscale) → TouchGFX
-```
-
-### Outils Utilisés
-
-| Outil | Usage |
-|-------|-------|
-| **Midjourney V7** | Génération initiale des designs |
-| **Nano Banana** (Gemini) | Édition IA (suppression éléments, fond transparent) |
-| **Magnific AI** | Upscaling haute qualité |
-| **Photopea** | Recadrage, ajustements finaux |
-
-### Assets Requis
-
-| Fichier | Dimensions | Description |
-|---------|------------|-------------|
-| `bg_main.png` | 480×272 | Fond gradient bleu doux |
-| `gauge_frame.png` | 145×110 | Cadran VU-mètre sans aiguille |
-| `gauge_needle.png` | 145×145 | Aiguille seule (pivot centré) |
-| `gauge_pivot.png` | 24×24 | Bouton central doré |
-
----
-
-## 📋 Protocole PREMORTEM
-
-Ce projet utilise le **Protocole PREMORTEM V3.5** - une méthodologie de validation systématique pour la conception électronique :
-
-### Modules Clés
-
-| Module | Fonction |
-|--------|----------|
-| **Module 0** | Triggers automatiques (composants critiques) |
-| **Module 1** | Hiérarchie des règles (NIVEAU 0/1/2) |
-| **Module 3** | Méthode datasheet |
-| **Module 4** | Protections par type de circuit |
-| **Module 5** | Calculs obligatoires |
-| **Module 9** | Validation code firmware |
-
-### Niveaux de Blocage
-
-| Niveau | Action | Exemple |
-|--------|--------|---------|
-| **NIVEAU 0** | Blocage total | Pas de datasheet semiconducteur |
-| **NIVEAU 1** | Confirmation requise | Configuration inhabituelle |
-| **NIVEAU 2** | Avertissement | Surdimensionnement |
-
----
-
-## 🚀 Roadmap
-
-### ✅ Terminé
-
-- [x] Architecture électronique V3.1.0
-- [x] Firmware ATmega328P V2.4.6
-- [x] Prototype UI PyGame V92
-- [x] Design UI React V10
-- [x] Assets Midjourney (fond, jauge)
-
-### 🔄 En Cours
-
-- [ ] Implémentation TouchGFX
-- [ ] Extraction assets (aiguille, pivot)
-- [ ] Intégration écran STM32H750B-DK
-
-### 📋 À Faire
-
-- [ ] PCB final V3.1.0
-- [ ] Boîtier aluminium
-- [ ] Tests EMC
-- [ ] Certification CE
-- [ ] Production série
-
----
-
-## 🇫🇷 Fabriqué en France
-
-Ce produit est conçu et assemblé en France, avec une attention particulière portée à la qualité et au support client.
-
----
-
-## 📄 Licence
-
-Projet propriétaire - Tous droits réservés © 2024-2025
-
----
-
-## 📞 Contact
-
-**Auteur** : Mehdi
-
-**Repository** : [github.com/mmmprod/LPS-Audiophile-DuoPro](https://github.com/mmmprod/LPS-Audiophile-DuoPro)
